@@ -1,0 +1,9 @@
+dubbo:
+  #声明注册到zk的名字 应该程序的名称
+  application:
+    name: boot-ego-order-service-consumer
+  registry:
+    address: zookeeper://47.115.46.193:2181
+    timeout: 100000
+  config-center:
+    timeout: 100000

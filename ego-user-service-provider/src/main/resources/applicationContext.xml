@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!--声明注册到zk的名字 应该程序的名称-->
+    <dubbo:application name="ego-user-service-provider"></dubbo:application>
+
+    <!--声明注册中心的地址和方式-->
+    <dubbo:registry address="zookeeper://47.115.46.193:2181"></dubbo:registry>
+
+    <!--使用dubbo协议，将服务暴露在20880端口 -->
+    <dubbo:protocol name="dubbo" port="20880"/>
+
+    <!--使用spring创建要暴露的对象UserServiceImpl-->
+    <bean id="userServiceImpl" class="com.ahdy.service.impl.UserServiceImpl"></bean>
+
+    <!--使用dubbo暴露服务-->
+    <dubbo:service interface="com.ahdy.service.UserService" weight="100" loadbalance="random/roundrobin/leastactive/consistentHash" retries="2" ref="userServiceImpl">
+        <dubbo:method name="getUserAddressList"></dubbo:method>
+    </dubbo:service>
+
+    <dubbo:provider retries="2"></dubbo:provider>
+    <!--    <dubbo:annotation package="com.ahdy.service.impl"></dubbo:annotation>-->
+</beans>
